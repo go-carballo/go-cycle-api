@@ -1,0 +1,15 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    restart: unless-stopped
+    environment:
+    - 'POSTGRES_DB=go-biciman_db'
+    - 'POSTGRES_PASSWORD=user.alejandro'
+    - 'POSTGRES_USER=alejandro'
+    ports:
+    - '5432:5432'
+    volumes:
+    - pgdata:/data/postgres
+
+volumes:
+  pgdata:
