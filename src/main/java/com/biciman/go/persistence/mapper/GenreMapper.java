@@ -1,4 +1,4 @@
-package com.biciman.go.persistence.persistence.mapper;
+package com.biciman.go.persistence.mapper;
 
 import com.biciman.go.domain.Types;
 import org.mapstruct.Named;
