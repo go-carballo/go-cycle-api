@@ -6,6 +6,8 @@ import com.biciman.go.domain.dto.UpdateBiciDto;
 import com.biciman.go.domain.service.BiciService;
 import com.biciman.go.domain.service.GoBicimanAiService;
 import com.biciman.go.persistence.crud.CrudBiciclyEntiy;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/bicicletas")
+@Tag(name = "Bici", description = "Bici management API")
 public class BiciController {
 
     private final BiciService biciService;
@@ -52,7 +55,7 @@ public class BiciController {
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<BiciDto> update(@PathVariable long id, @RequestBody UpdateBiciDto updateBiciDto){
+    public  ResponseEntity<BiciDto> update(@PathVariable long id, @RequestBody @Valid UpdateBiciDto updateBiciDto){
         return ResponseEntity.ok(this.biciService.update(id, updateBiciDto));
     }
 
