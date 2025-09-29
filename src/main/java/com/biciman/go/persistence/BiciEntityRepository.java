@@ -2,9 +2,10 @@ package com.biciman.go.persistence;
 
 import com.biciman.go.domain.dto.BiciDto;
 import com.biciman.go.domain.dto.UpdateBiciDto;
+import com.biciman.go.domain.exception.BiciAlreadyExist;
 import com.biciman.go.domain.repository.BiciRepository;
 import com.biciman.go.persistence.crud.CrudBiciclyEntiy;
-import com.biciman.go.persistence.entity.BiciEntity;
+import com.biciman.go.persistence.entity.Bicicleta;
 import com.biciman.go.persistence.mapper.BiciMapper;
 import org.springframework.stereotype.Repository;
 
@@ -27,25 +28,29 @@ public class BiciEntityRepository implements BiciRepository {
 
     @Override
     public BiciDto getById(long id) {
-        BiciEntity biciEntity = this.crudBiciclyEntiy.findById(id).orElse(null);
-            return this.biciMapper.toDto(biciEntity);
+        Bicicleta bicicleta = this.crudBiciclyEntiy.findById(id).orElse(null);
+            return this.biciMapper.toDto(bicicleta);
     }
 
     @Override
     public BiciDto save(BiciDto biciDto) {
-        BiciEntity biciEntity = this.biciMapper.toEntity(biciDto);
-        biciEntity.setEstado("Disponible");
-        return this.biciMapper.toDto(this.crudBiciclyEntiy.save(biciEntity));
+        if (this.crudBiciclyEntiy.findFirstBymarca(biciDto.marca()) != null) {
+            throw new BiciAlreadyExist(biciDto.marca());
+
+        }
+        Bicicleta bicicleta = this.biciMapper.toEntity(biciDto);
+        bicicleta.setEstado("Disponible");
+        return this.biciMapper.toDto(this.crudBiciclyEntiy.save(bicicleta));
     }
 
     @Override
     public BiciDto update(long id, UpdateBiciDto updateBiciDto) {
-        BiciEntity biciEntity = this.crudBiciclyEntiy.findById(id).orElse(null);
-        if (biciEntity == null) {
+        Bicicleta bicicleta = this.crudBiciclyEntiy.findById(id).orElse(null);
+        if (bicicleta == null) {
             return null;
         }
-        biciEntity.setMarca(updateBiciDto.titulo());
-        return this.biciMapper.toDto(this.crudBiciclyEntiy.save(biciEntity));
+        bicicleta.setMarca(updateBiciDto.titulo());
+        return this.biciMapper.toDto(this.crudBiciclyEntiy.save(bicicleta));
     }
 
     @Override
