@@ -1,11 +1,11 @@
-FROM gradle:8.6.0-jdk17-alpine AS build
+FROM gradle:8.14.3-jdk21 AS build
 COPY --chown=gradle:gradle . /app
 WORKDIR /app
 RUN gradle bootJar --no-daemon
 
 
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "platzi_play.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "go-biciman-1.0.0.jar  "]
