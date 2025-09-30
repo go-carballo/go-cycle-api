@@ -1,5 +1,6 @@
-FROM gradle:8.6.5-jdk17-alpine AS build
+FROM gradle:8.6.0-jdk17-alpine AS build
 COPY --chown=gradle:gradle . /app
+WORKDIR /app
 RUN gradle bootJar --no-daemon
 
 
