@@ -8,4 +8,4 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "go-biciman-1.0.0.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=prod", "-jar", "go-biciman.jar"]
