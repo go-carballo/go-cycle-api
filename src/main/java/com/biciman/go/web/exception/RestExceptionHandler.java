@@ -1,11 +1,12 @@
 package com.biciman.go.web.exception;
 
 import com.biciman.go.domain.exception.BiciAlreadyExist;
+import com.biciman.go.domain.exception.BiciNotFound;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,8 +31,11 @@ public class RestExceptionHandler {
         return ResponseEntity.badRequest().body(errors);
 
     }
+    @ExceptionHandler(BiciNotFound.class)
+    public ResponseEntity<Error> handleException(BiciNotFound ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new Error("Bici Not Found", ex.getMessage()));
 
-
+    }
     /*@ExceptionHandler(Exception.class)
     public ResponseEntity<Error> handleException(Exception ex) {
         Error error = new Error("Unknown Error", ex.getMessage());

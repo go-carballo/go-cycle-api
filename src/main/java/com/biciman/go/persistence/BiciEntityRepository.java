@@ -3,6 +3,7 @@ package com.biciman.go.persistence;
 import com.biciman.go.domain.dto.BiciDto;
 import com.biciman.go.domain.dto.UpdateBiciDto;
 import com.biciman.go.domain.exception.BiciAlreadyExist;
+import com.biciman.go.domain.exception.BiciNotFound;
 import com.biciman.go.domain.repository.BiciRepository;
 import com.biciman.go.persistence.crud.CrudBiciclyEntiy;
 import com.biciman.go.persistence.entity.Bicicleta;
@@ -29,7 +30,7 @@ public class BiciEntityRepository implements BiciRepository {
     @Override
     public BiciDto getById(long id) {
         Bicicleta bicicleta = this.crudBiciclyEntiy.findById(id).orElse(null);
-            return this.biciMapper.toDto(bicicleta);
+        return this.biciMapper.toDto(bicicleta);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class BiciEntityRepository implements BiciRepository {
     public BiciDto update(long id, UpdateBiciDto updateBiciDto) {
         Bicicleta bicicleta = this.crudBiciclyEntiy.findById(id).orElse(null);
         if (bicicleta == null) {
-            return null;
+            throw new BiciNotFound(id);
         }
         bicicleta.setMarca(updateBiciDto.titulo());
         return this.biciMapper.toDto(this.crudBiciclyEntiy.save(bicicleta));
@@ -55,9 +56,14 @@ public class BiciEntityRepository implements BiciRepository {
 
     @Override
     public void delete(long id) {
+        Bicicleta bicicleta = this.crudBiciclyEntiy.findById(id).orElse(null);
+        if (bicicleta == null) {
+            throw new BiciNotFound(id);
+        }
         this.crudBiciclyEntiy.deleteById(id);
 
+         this.biciMapper.toDto(bicicleta);
     }
-
-
 }
+
+
